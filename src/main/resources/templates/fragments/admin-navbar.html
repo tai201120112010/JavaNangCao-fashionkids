@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="adminNavbar" class="navbar navbar-expand-lg admin-navbar shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-white" th:href="@{/admin/dashboard}">
+            Fashion Kids Admin
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button"
+                data-bs-toggle="collapse" data-bs-target="#adminNavbarContent"
+                aria-controls="adminNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="adminNavbarContent">
+            <ul class="navbar-nav me-auto mb-3 mb-lg-0 gap-lg-2">
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/dashboard}">Thống kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/products}">Sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/categories}">Danh mục</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/orders}">Đơn hàng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/customers}">Khách hàng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" th:href="@{/admin/discounts}">Mã giảm giá</a>
+                </li>
+            </ul>
+
+            <form th:action="@{/logout}" method="post" class="d-flex">
+                <button type="submit" class="btn btn-light fw-semibold px-4">
+                    Logout
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

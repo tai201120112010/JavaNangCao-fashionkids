@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Giỏ hàng - Fashion Kids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* RESET & BASE STYLES */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .header {
+            background: #e64a19;
+            color: white;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header h2 { font-size: 22px; margin-bottom: 0; }
+        .header a { color: white; text-decoration: none; }
+        .header-right { display: flex; gap: 25px; font-weight: 500; align-items: center; }
+
+        /* CONTAINER */
+        .container-cart {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            min-height: 400px;
+        }
+
+        h2.title {
+            margin-bottom: 30px;
+            color: #e64a19;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        /* TABLE STYLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th {
+            background: #fffcfb;
+            text-align: left;
+            padding: 18px;
+            border-bottom: 2px solid #f0f0f0;
+            color: #e64a19;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        /* QUANTITY BUTTONS */
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fa;
+            width: fit-content;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+        .btn-qty {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .btn-qty:hover { background: #e64a19; color: white; border-color: #e64a19; }
+        .qty-val { font-weight: bold; min-width: 25px; text-align: center; font-size: 16px; }
+
+        /* DELETE BUTTON */
+        .btn-remove {
+            background: #fff5f5;
+            color: #ff4d4d;
+            border: 1px solid #ffebeb;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn-remove:hover { background: #ff4d4d; color: white; }
+
+        /* SUMMARY */
+        .summary {
+            text-align: right;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .total-label { font-size: 18px; color: #666; margin-bottom: 5px; }
+        .total-price {
+            color: #e64a19;
+            font-size: 32px;
+            font-weight: 800;
+        }
+        .btn-checkout {
+            display: inline-block;
+            margin-top: 20px;
+            background: #e64a19;
+            color: white;
+            padding: 15px 45px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(230, 74, 25, 0.3);
+            border: none;
+        }
+        .btn-checkout:hover { background: #bf360c; transform: translateY(-2px); color: white; }
+
+        /* FOOTER GIỐNG TRANG SHOP */
+        .footer {
+            background: #222;
+            color: #bbb;
+            padding: 60px 0 30px 0;
+            margin-top: 100px; /* Đẩy footer thấp xuống giống trang shop */
+            border-top: 4px solid #e64a19;
+        }
+        .footer-container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 20px; text-align: left; }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 20px; font-weight: 700; }
+        .footer-col p { font-size: 14px; line-height: 1.8; margin-bottom: 15px; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #bbb; text-decoration: none; transition: 0.3s; }
+        .footer-col ul li a:hover { color: #e64a19; padding-left: 5px; }
+        .social-links a { color: white; font-size: 22px; margin-right: 20px; transition: 0.3s; text-decoration: none; }
+        .social-links a:hover { color: #e64a19; }
+        .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 50px; padding-top: 25px; font-size: 14px; }
+    </style>
+
+    <script>
+        function getCsrfInfo() {
+            const token = document.querySelector('input[name="_csrf"]')?.value;
+            const header = document.querySelector('input[name="_csrf_header"]')?.value || "X-CSRF-TOKEN";
+            return { token, header };
+        }
+
+        async function changeQty(id, delta) {
+            let qtyEl = document.getElementById("qty-" + id);
+            let qty = parseInt(qtyEl.innerText);
+            let newQty = qty + delta;
+            if (newQty <= 0) return;
+
+            const csrf = getCsrfInfo();
+            await fetch("/cart/update", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    [csrf.header]: csrf.token
+                },
+                body: "itemId=" + id + "&quantity=" + newQty
+            });
+            location.reload();
+        }
+
+        async function removeItem(id) {
+            if(!confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) return;
+            const csrf = getCsrfInfo();
+            await fetch("/cart/remove/" + id, {
+                method: "POST",
+                headers: { [csrf.header]: csrf.token }
+            });
+            location.reload();
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="header">
+    <a href="/shop"><h2>🏠 Fashion Kids</h2></a>
+    <div class="header-right">
+        <a href="/shop"><i class="fas fa-arrow-left"></i> Tiếp tục mua sắm</a>
+        <a href="/login"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+    </div>
+</div>
+
+<div class="container container-cart">
+    <h2 class="title"><i class="fas fa-shopping-basket"></i> Giỏ hàng của bạn</h2>
+
+    <input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" th:if="${_csrf}" name="_csrf_header" th:value="${_csrf.headerName}"/>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Đơn giá</th>
+            <th style="text-align: center;">Số lượng</th>
+            <th>Thành tiền</th>
+            <th style="text-align: center;">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td>
+                <strong style="font-size: 16px;" th:text="${item.product.name}"></strong>
+            </td>
+            <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+            <td>
+                <div class="qty-controls" style="margin: 0 auto;">
+                    <button class="btn-qty" type="button" th:onclick="'changeQty(' + ${item.id} + ', -1)'">-</button>
+                    <span class="qty-val" th:id="'qty-' + ${item.id}" th:text="${item.quantity}"></span>
+                    <button class="btn-qty" type="button" th:onclick="'changeQty(' + ${item.id} + ', 1)'">+</button>
+                </div>
+            </td>
+            <td style="font-weight: 800; color: #e64a19;"
+                th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+            <td style="text-align: center;">
+                <button class="btn-remove" type="button" th:onclick="'removeItem(' + ${item.id} + ')'">
+                    <i class="fas fa-trash-alt"></i> Xóa
+                </button>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(items)}">
+            <td colspan="5" style="text-align: center; padding: 60px; color: #999; font-size: 18px;">
+                <i class="fas fa-shopping-cart fa-3x mb-3" style="display: block; opacity: 0.3;"></i>
+                Giỏ hàng của bạn đang trống. <br>
+                <a href="/shop" class="btn-checkout" style="font-size: 15px; padding: 10px 25px; margin-top: 15px;">MUA SẮM NGAY</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="summary" th:if="${!#lists.isEmpty(items)}">
+        <p class="total-label">Tổng cộng thanh toán:</p>
+        <div class="total-price">
+            <span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ
+        </div>
+        <a th:href="@{/checkout}" class="btn-checkout">TIẾN HÀNH ĐẶT HÀNG <i class="fas fa-chevron-right ms-2"></i></a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h4>🏠 FASHION KIDS</h4>
+            <p>Chúng tôi tự hào là đơn vị cung cấp trang phục và đồ chơi an toàn cho bé yêu.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>DỊCH VỤ</h4>
+            <ul>
+                <li><a href="#">Bảo hành</a></li>
+                <li><a href="#">Đổi trả</a></li>
+                <li><a href="#">Thanh toán</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>LIÊN HỆ</h4>
+            <p><i class="fas fa-map-marker-alt me-2" style="color: #e64a19;"></i> 123 Văn Lang, Quận Bình Thạnh, TP.HCM</p>
+            <p><i class="fas fa-phone-alt me-2" style="color: #e64a19;"></i> Hotline: 1900 1234</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 <strong>Fashion Kids</strong> - All Rights Reserved. <br>
+        <small>Coded with by Tran Hoang Huy</small>
+    </div>
+</footer>
+
+</body>
+</html>

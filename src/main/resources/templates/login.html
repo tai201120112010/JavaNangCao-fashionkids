@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dang nhap - Fashion Kids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                              url('https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #e64a19;
+        }
+
+        .logo-home {
+            font-size: 24px;
+            color: #e64a19;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        p.subtitle {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e64a19;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border-radius: 12px;
+            border: 2px solid #f0f0f0;
+            outline: none;
+            transition: 0.3s;
+            font-size: 15px;
+            background: #fdfdfd;
+        }
+
+        input:focus {
+            border-color: #e64a19;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(230, 74, 25, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #e64a19;
+            border: none;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(230, 74, 25, 0.2);
+            margin-top: 5px;
+        }
+
+        .btn-login:hover {
+            background: #bf360c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 74, 25, 0.3);
+        }
+
+        .register-link {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .register-link a {
+            color: #e64a19;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .decoration-icons {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #ffb74d;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .message.error {
+            color: #d32f2f;
+            background: #ffebee;
+        }
+
+        .message.success {
+            color: #2e7d32;
+            background: #e8f5e9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <a th:href="@{/shop}" class="logo-home">Fashion Kids</a>
+
+    <div class="decoration-icons">
+        <i class="fas fa-smile-beam"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-child"></i>
+        <i class="fas fa-cloud"></i>
+    </div>
+
+    <h2>Welcome!</h2>
+    <p class="subtitle">Đăng nhập để tiếp tục mua sắm cho bé.</p>
+
+    <div th:if="${param.error}" class="message error">
+        <i class="fas fa-exclamation-circle"></i> Sai tên đăng nhập hoặc mật khẩu sai.
+    </div>
+
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="username" placeholder="Tên đăng nhập" required />
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" placeholder="Mật khẩu" required />
+        </div>
+
+        <button type="submit" class="btn-login">ĐĂNG NHẬP NGAY</button>
+    </form>
+
+    <div class="register-link">
+        Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay tại đây</a>
+    </div>
+</div>
+
+</body>
+</html>

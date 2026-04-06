@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh toán - Fashion Kids</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        /* HEADER ĐỒNG BỘ */
+        .header {
+            background: #e64a19;
+            color: white;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header a { color: white; text-decoration: none; font-weight: bold; }
+        .header h2 { margin-bottom: 0; font-size: 22px; }
+
+        .checkout-container { margin-top: 40px; margin-bottom: 60px; min-height: 600px; }
+
+        /* CARD STYLE */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background: white;
+        }
+        .card-title-custom {
+            color: #e64a19;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* INPUT FIX */
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #eee;
+            padding: 12px;
+            background: #fcfcfc;
+        }
+        .form-control:focus {
+            border-color: #e64a19;
+            box-shadow: 0 0 0 0.25rem rgba(230, 74, 25, 0.1);
+            background: #fff;
+        }
+
+        /* PRODUCT ITEM */
+        .product-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .product-img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #f0f0f0;
+        }
+
+        /* BUTTONS */
+        .btn-confirm {
+            background: #e64a19;
+            border: none;
+            padding: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: 0.3s;
+            color: white;
+            font-size: 16px;
+        }
+        .btn-confirm:hover {
+            background: #bf360c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 74, 25, 0.3);
+            color: white;
+        }
+
+        .btn-apply {
+            background: #333;
+            color: white;
+            border-radius: 0 10px 10px 0;
+            padding: 0 20px;
+        }
+        .btn-apply:hover { background: #000; color: white; }
+
+        /* TOTAL SECTION */
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .final-price {
+            color: #e64a19;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .coupon-box {
+            background: #fffcfb;
+            border: 1px dashed #e64a19;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        /* FOOTER ĐỒNG BỘ */
+        .footer {
+            background: #222;
+            color: #bbb;
+            padding: 60px 0 30px 0;
+            margin-top: 100px;
+            border-top: 4px solid #e64a19;
+        }
+        .footer-container { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; padding: 0 20px; }
+        .footer-col h4 { color: white; margin-bottom: 25px; font-size: 20px; font-weight: 700; }
+        .footer-col p { font-size: 14px; line-height: 1.8; margin-bottom: 15px; }
+        .footer-col ul { list-style: none; padding: 0; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #bbb; text-decoration: none; transition: 0.3s; }
+        .footer-col ul li a:hover { color: #e64a19; padding-left: 5px; }
+        .social-links a { color: white; font-size: 22px; margin-right: 20px; transition: 0.3s; text-decoration: none; }
+        .social-links a:hover { color: #e64a19; }
+        .footer-bottom { text-align: center; border-top: 1px solid #333; margin-top: 50px; padding-top: 25px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a th:href="@{/shop}"><h2>🏠 Fashion Kids</h2></a>
+    <div class="header-right">
+        <a th:href="@{/cart}"><i class="fas fa-shopping-cart"></i> Quay lại giỏ hàng</a>
+    </div>
+</div>
+
+<div class="container checkout-container">
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card p-4">
+                <h4 class="card-title-custom"><i class="fas fa-truck me-2"></i> THÔNG TIN GIAO HÀNG</h4>
+                <form th:action="@{/checkout/confirm}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">HỌ VÀ TÊN NGƯỜI NHẬN</label>
+                        <input type="text" name="name" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">SỐ ĐIỆN THOẠI</label>
+                        <input type="tel" name="phone" class="form-control" placeholder="Số điện thoại liên hệ" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">ĐỊA CHỈ CHI TIẾT</label>
+                        <textarea name="address" class="form-control" rows="3" placeholder="Số nhà, tên đường, Phường/Xã..." required></textarea>
+                    </div>
+
+                    <div class="alert alert-warning small border-0 py-3" style="background: #fff8f1; color: #856404;">
+                        <i class="fas fa-info-circle me-1"></i> Vui lòng kiểm tra kỹ thông tin trước khi xác nhận đơn hàng.
+                    </div>
+
+                    <button type="submit" class="btn btn-confirm btn-lg w-100 mt-2">
+                        XÁC NHẬN & ĐẶT HÀNG NGAY
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card p-4 mb-3">
+                <h4 class="card-title-custom"><i class="fas fa-shopping-bag me-2"></i> TÓM TẮT ĐƠN HÀNG</h4>
+
+                <div class="order-items-list mb-4" style="max-height: 350px; overflow-y: auto; padding-right: 8px;">
+                    <div th:each="item : ${cartItems}" class="d-flex align-items-center product-item">
+                        <img th:src="${item.product.image != null ? item.product.image : 'https://via.placeholder.com/60'}" class="product-img me-3">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 text-truncate fw-bold" style="max-width: 180px; font-size: 15px;" th:text="${item.product.name}">Tên SP</h6>
+                            <small class="text-muted" th:text="'Số lượng: ' + ${item.quantity}"></small>
+                        </div>
+                        <span class="fw-bold text-dark" th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                    </div>
+                </div>
+
+                <div class="coupon-box mb-4">
+                    <label class="form-label fw-bold small text-danger"><i class="fas fa-ticket-alt me-1"></i> MÃ GIẢM GIÁ</label>
+                    <form th:action="@{/checkout/apply-discount}" method="post" class="input-group">
+                        <input type="text" name="couponCode" class="form-control" style="border-color: #e64a19;" placeholder="Nhập mã ưu đãi..."
+                               th:value="${session.appliedCoupon}">
+                        <button class="btn btn-apply" type="submit">Áp dụng</button>
+                    </form>
+                    <div th:if="${errorMsg}" class="text-danger fw-bold small mt-2" th:text="${errorMsg}"></div>
+                    <div th:if="${successMsg}" class="text-success fw-bold small mt-2" th:text="${successMsg}"></div>
+                </div>
+
+                <div class="total-row">
+                    <span class="text-muted">Tạm tính:</span>
+                    <span class="fw-bold" th:text="${#numbers.formatDecimal(totalOriginal, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                </div>
+
+                <div class="total-row text-danger" th:if="${session.discountPercent != null}">
+                    <span th:text="'Giảm giá (' + ${session.discountPercent} + '%):'"></span>
+                    <span th:text="'- ' + ${#numbers.formatDecimal(discountAmount, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                </div>
+
+                <hr class="my-3" style="opacity: 0.1;">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold fs-5">TỔNG CỘNG:</span>
+                    <span class="final-price" th:text="${#numbers.formatDecimal(finalTotal, 0, 'COMMA', 0, 'POINT')} + ' đ'"></span>
+                </div>
+            </div>
+
+            <p class="text-center">
+                <a th:href="@{/cart}" class="text-decoration-none text-muted small"><i class="fas fa-chevron-left me-1"></i> Thay đổi sản phẩm trong giỏ hàng</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h4>🏠 FASHION KIDS</h4>
+            <p>Chúng tôi tự hào là đơn vị cung cấp trang phục và đồ chơi an toàn cho bé yêu.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>DỊCH VỤ</h4>
+            <ul>
+                <li><a href="#">Bảo hành</a></li>
+                <li><a href="#">Đổi trả</a></li>
+                <li><a href="#">Thanh toán</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>LIÊN HỆ</h4>
+            <p><i class="fas fa-map-marker-alt me-2" style="color: #e64a19;"></i> 123 Văn Lang, Quận Bình Thạnh, TP.HCM</p>
+            <p><i class="fas fa-phone-alt me-2" style="color: #e64a19;"></i> Hotline: 1900 1234</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 <strong>Fashion Kids</strong> - All Rights Reserved. <br>
+        <small>Coded with by Tran Hoang Huy</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
