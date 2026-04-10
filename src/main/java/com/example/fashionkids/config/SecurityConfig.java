@@ -22,10 +22,10 @@ public class SecurityConfig {
                 // ✅ 🔥 QUAN TRỌNG NHẤT – FIX AJAX CART
                 .csrf(csrf -> csrf.disable())
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/shop/**", "/product/**", "/cart/**").hasAnyRole("USER", "ADMIN")
+                .authorizeRequests(auth -> auth
+                        .antMatchers("/", "/login", "/register", "/css/**", "/js/**").permitAll()
+                        .antMatchers("/admin/**").hasRole("ADMIN")
+                        .antMatchers("/shop/**", "/product/**", "/cart/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
 

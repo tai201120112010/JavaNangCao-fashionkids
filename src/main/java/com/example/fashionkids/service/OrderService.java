@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class OrderService {
             detail.setQuantity(item.getQuantity());
             detail.setPrice(item.getProduct().getPrice());
             return detail;
-        }).toList();
+        }).collect(Collectors.toList());
 
         order.setOrderDetails(new ArrayList<>(orderDetails));
         orderRepo.save(order);

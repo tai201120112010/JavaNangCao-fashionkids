@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -66,16 +68,19 @@ public class ShopController {
     private List<Product> applyTabFilter(List<Product> baseProducts, String tab) {
         String normalizedTab = normalizeTab(tab);
 
-        return switch (normalizedTab) {
-            case NEWEST_TAB -> baseProducts.stream()
-                    .sorted(Comparator.comparing(Product::getId, Comparator.nullsLast(Long::compareTo)).reversed())
-                    .toList();
-            case DISCOUNT_TAB -> baseProducts.stream()
-                    .filter(product -> product.getDiscountPercent() > 0)
-                    .sorted(Comparator.comparing(Product::getId, Comparator.nullsLast(Long::compareTo)).reversed())
-                    .toList();
-            default -> filterBestSellingProducts(baseProducts);
-        };
+        switch (normalizedTab) {
+            case NEWEST_TAB:
+                return baseProducts.stream()
+                        .sorted(Comparator.comparing(Product::getId, Comparator.nullsLast(Long::compareTo)).reversed())
+                        .collect(Collectors.toList());
+            case DISCOUNT_TAB:
+                return baseProducts.stream()
+                        .filter(product -> product.getDiscountPercent() > 0)
+                        .sorted(Comparator.comparing(Product::getId, Comparator.nullsLast(Long::compareTo)).reversed())
+                        .collect(Collectors.toList());
+            default:
+                return filterBestSellingProducts(baseProducts);
+        }
     }
 
     private List<Product> filterBestSellingProducts(List<Product> baseProducts) {
@@ -91,7 +96,7 @@ public class ShopController {
         return bestSellingIds.stream()
                 .map(productMap::get)
                 .filter(product -> product != null)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private String normalizeTab(String tab) {

@@ -10,12 +10,10 @@ import java.util.List;
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
-    @Query("""
-            SELECT od.product.id
-            FROM OrderDetail od
-            GROUP BY od.product.id
-            ORDER BY SUM(od.quantity) DESC, MAX(od.id) DESC
-            """)
+    @Query("SELECT od.product.id " +
+            "FROM OrderDetail od " +
+            "GROUP BY od.product.id " +
+            "ORDER BY SUM(od.quantity) DESC, MAX(od.id) DESC")
     List<Long> findBestSellingProductIds();
 
     boolean existsByProductId(Long productId);

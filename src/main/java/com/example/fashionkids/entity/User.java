@@ -1,6 +1,6 @@
 package com.example.fashionkids.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity
