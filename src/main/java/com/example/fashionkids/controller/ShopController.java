@@ -39,7 +39,7 @@ public class ShopController {
     @GetMapping("/shop")
     public String shop(@RequestParam(name = "keyword", required = false) String keyword,
                        @RequestParam(name = "category", required = false) Long categoryId,
-                       @RequestParam(name = "tab", required = false, defaultValue = BEST_SELLER_TAB) String tab,
+                       @RequestParam(name = "tab", required = false, defaultValue = NEWEST_TAB) String tab,
                        Model model) {
         List<Product> baseProducts;
 

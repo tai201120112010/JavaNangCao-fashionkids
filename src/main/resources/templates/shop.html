@@ -142,11 +142,13 @@
         <div class="product-filter-header">
             <div class="filter-tabs">
                 <a class="filter-tab-item"
-                   th:classappend="${activeTab == 'best-seller'} ? ' active'"
-                   th:href="@{/shop(tab='best-seller', category=${selectedCat}, keyword=${keyword})}">Bán chạy</a>
-                <a class="filter-tab-item"
                    th:classappend="${activeTab == 'newest'} ? ' active'"
                    th:href="@{/shop(tab='newest', category=${selectedCat}, keyword=${keyword})}">Hàng mới</a>
+                   
+                <a class="filter-tab-item"
+                   th:classappend="${activeTab == 'best-seller'} ? ' active'"
+                   th:href="@{/shop(tab='best-seller', category=${selectedCat}, keyword=${keyword})}">Bán chạy</a>
+        
                 <a class="filter-tab-item"
                    th:classappend="${activeTab == 'discount'} ? ' active'"
                    th:href="@{/shop(tab='discount', category=${selectedCat}, keyword=${keyword})}">Đang giảm giá</a>
